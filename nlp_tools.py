@@ -1,20 +1,39 @@
 import numpy as np
 import nltk
 from nltk import WordNetLemmatizer
-# nltk.download('punkt')
+import MeCab #pip install mecab-python3 ##pip install unidic-lite
+#nltk.download('punkt')
+#nltk.download('wordnet')
+#nltk.download('omw-1.4')
 
-def tokenize(sentence):
+def tokenize(sentence, language):
     """
-        split sentence into array of words/tokens
-        a token can be a word or punctuation character, or number
+        this returns a sentence as 'tokens' each word gets separated onto its own
+        a token can be classified as either a word or a punctuation mark
     """
-    return nltk.word_tokenize(sentence)
+    if language == "japanese":
+        jpt = MeCab.Tagger("-Owakati")
+        tokens = jpt.parse(sentence).split()
+        print(tokens)
+    else:
+        tokens = nltk.word_tokenize(sentence)
 
+    return tokens
 
 def lemmatize(word):
     """
         lemmatizing groups words that have the same meanings and analyzes them as a single word
-        A more consistent way of Stemming as it provides a context to the words
+        a more consistent way of Stemming as it provides a context to the words
     """
     lemmatizer = WordNetLemmatizer()
     return lemmatizer.lemmatize(word.lower())
+
+def bag(tokenizedSentence):
+    lemmatizedSentence = [lemmatize(word) for word in tokenizedSentence]
+    print(lemmatizedSentence)
+
+
+sen = "おはようございます."
+sen1 = tokenize(sen, "japanese")
+bag(sen1)
+
