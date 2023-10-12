@@ -1,0 +1,24 @@
+{
+    "intents" : 
+    [
+        {
+            "tag" : "greeting",
+            "inputs" : [
+                "hello",
+                "hi"
+            ],
+            "responses" : [
+                "Hello There"
+            ]
+        },
+        {
+            "tag" : "greeting-jp",
+            "inputs" : [
+                "おはようございます"
+            ],
+            "responses" : [
+                "Hello There"
+            ]
+        }
+    ]
+}
