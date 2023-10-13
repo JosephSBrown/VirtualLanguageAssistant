@@ -12,12 +12,21 @@
             ]
         },
         {
-            "tag" : "greeting-jp",
+            "tag" : "goodbye",
             "inputs" : [
-                "おはようございます"
+                "Goodbye"
             ],
             "responses" : [
-                "Hello There"
+                "Goodbye!"
+            ]
+        },
+        {
+            "tag" : "greeting-jp",
+            "inputs" : [
+            "おはようございます"
+            ],
+            "responses" : [
+            "おはようございます"
             ]
         }
     ]
