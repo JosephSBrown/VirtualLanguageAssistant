@@ -61,7 +61,7 @@ data = {"intents":
           "Adios",
           "Goodbye",
           "See you later",
-          "nice conversation. bye",
+          "nice conversation. Bye",
           "okay. Have a nice day",
           "Take care",
           "we'll meet soon",
@@ -84,33 +84,31 @@ data = {"intents":
       "responses":[
           "Yeah , am fine",
           "Everything's going on well",
-          "Doing good.Thanks you are my best friend",
+          "Doing good. Thanks you are my best friend <NAME>",
           "Things are Great",
           "Yeah Fine, nothing much going on in my life",
-          "I am Great , wanna join the pirate's organization ?",
           "Everything's great.",
-          "I am doing good. Life is boring. need to go on an adventure"
         ]
     },
     {
       "tag":"whoareyou",
     "input":[
-        "who are you ?",
-        "what are you ?",
-        "what is your name ?",
-        "are you a chatbot ?",
-        "what can I call you ?",
-        "your name ?","are you a bot ?",
-        "how do I address you ?",
+        "who are you?",
+        "what are you?",
+        "what is your name?",
+        "are you a chatbot?",
+        "what can I call you?",
+        "your name ?","are you a bot?",
+        "how do I address you?",
         "How do I call you"
     ],
       "responses":[
-          "I am Artie Your Virtual Language Assistant",
-          "I am Artie, What Would You Like to Talk About?",
-          "I am Artie",
-          "My name is Artie and I am the Goat",
-          "You can call me Artie and I am your Virtual Assistant",
-          "My name is Artie and I am here to help you learn Languages"
+          "I am <BOTNAME> Your Virtual Language Assistant",
+          "I am <BOTNAME>, What Would You Like to Talk About?",
+          "I am <BOTNAME>",
+          "My name is <BOTNAME> and I am the Goat",
+          "You can call me <BOTNAME> and I am your Virtual Assistant",
+          "My name is <BOTNAME> and I am here to help you learn Languages"
         ]
     },
     {

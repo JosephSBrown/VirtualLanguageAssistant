@@ -9,6 +9,9 @@ import numpy as np
 
 from chatbotdata import data
 
+bot_name = "Artie"
+name = "Joseph"
+
 tokenizer = tf.keras.preprocessing.text.Tokenizer(num_words=2000)
 le = LabelEncoder()
 
@@ -79,6 +82,8 @@ def get_bot_response(text, model, tokenizer, le, responses, input_shape):
         bot_response="I Do Not Understand"
     else:
         bot_response = random.choice(responses[response_tag])
+    bot_response = bot_response.replace("<NAME>", name)
+    bot_response = bot_response.replace("<BOTNAME>", bot_name)
     return bot_response
 
 def SpeechRecognition():
@@ -105,9 +110,11 @@ def App():
 
     while True:
         text = SpeechRecognition()
+        print(f'You: {text}')
 
         bot_response = get_bot_response(text, model, tokenizer, le, responses, input_shape)
 
+        print(f'{bot_name}: {bot_response}')
         TextToSpeech(bot_response)
         if text == 'quit':
             break
