@@ -6,6 +6,7 @@ import string
 import pandas as pd
 import random
 import numpy as np
+import MeCab
 
 from chatbotdata import data
 
@@ -15,7 +16,7 @@ name = "Joseph"
 tokenizer = tf.keras.preprocessing.text.Tokenizer(num_words=2000)
 le = LabelEncoder()
 
-def preprocess_data(data):
+def preprocess_data(data, language):
     tags = []
     inputs = []
     responses = {}
@@ -28,8 +29,12 @@ def preprocess_data(data):
     df = pd.DataFrame({"inputs": inputs, "tags": tags})
     df = df.sample(frac=1)
 
-    df['inputs'] = df['inputs'].apply(lambda wrd: [ltrs.lower() for ltrs in wrd if ltrs not in string.punctuation])
-    df['inputs'] = df['inputs'].apply(lambda wrd: ''.join(wrd))
+    if language.lower() == 'japanese':
+        mecab = MeCab.Tagger()
+        df['inputs'] = df['inputs'].apply(lambda wrd: mecab.parse(wrd).split())
+    else:
+        df['inputs'] = df['inputs'].apply(lambda wrd: [ltrs.lower() for ltrs in wrd if ltrs not in string.punctuation])
+        df['inputs'] = df['inputs'].apply(lambda wrd: ''.join(wrd))
 
     tokenizer.fit_on_texts(df['inputs'])
     train = tokenizer.texts_to_sequences(df['inputs'])
@@ -86,7 +91,7 @@ def get_bot_response(text, model, tokenizer, le, responses, input_shape):
     bot_response = bot_response.replace("<BOTNAME>", bot_name)
     return bot_response
 
-def SpeechRecognition():
+def SpeechRecognition(srlang):
     print("Listening...")
     r = sr.Recognizer()
     with sr.Microphone() as mic:
@@ -94,7 +99,7 @@ def SpeechRecognition():
         r.adjust_for_ambient_noise(mic, duration=0.2)
         audio = r.listen(mic)
 
-        text = r.recognize_google(audio)
+        text = r.recognize_google(audio, language=srlang)
         return text
     
 def TextToSpeech(bot_response):
@@ -104,12 +109,30 @@ def TextToSpeech(bot_response):
     engine.say(bot_response)
     engine.runAndWait()
 
-def App():
-    x_train, y_train, tokenizer, le, responses = preprocess_data(data)
+def Start():
+    print("Choose a Number to Select a Language to Learn in\n[1]English\n[2]French\n[3]Japanese")
+    choice = float(input("Choice: "))
+    if choice == 1:
+        language = "English"
+        srlang = ""
+    if choice == 2:
+        language = "French"
+        srlang = "fr-FR"
+    elif choice == 3:
+        language = "Japanese"
+        srlang = "ja-JP"
+    else:
+        language = "English"
+        srlang = ""
+
+    App(language, srlang)
+
+def App(language, srlang):
+    x_train, y_train, tokenizer, le, responses = preprocess_data(data, language)
     model, input_shape = train_neural_network(x_train, y_train)
 
     while True:
-        text = SpeechRecognition()
+        text = SpeechRecognition(srlang)
         print(f'You: {text}')
 
         bot_response = get_bot_response(text, model, tokenizer, le, responses, input_shape)
@@ -120,4 +143,4 @@ def App():
             break
 
 if '__main__' == __name__:
-    App()
+    Start()
